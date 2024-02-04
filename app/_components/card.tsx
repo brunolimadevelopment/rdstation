@@ -2,9 +2,9 @@
 import React, { useRef } from 'react';
 import html2pdf from 'html2pdf.js';
 
-interface CardProps {
+type CardProps = {
   data: {
-    nome: string;
+    name: string;
     telefone: string;
     email: string;
   };
@@ -51,7 +51,7 @@ const Card: React.FC<CardProps> = ({ data }) => {
     <div className="card" id="card" ref={cardRef}>
       <h2>Dados do Usuário</h2>
       <p>
-        <strong>Nome:</strong> {data.nome}
+        <strong>Nome:</strong> {data.name}
       </p>
       <p>
         <strong>Telefone:</strong> {data.telefone}

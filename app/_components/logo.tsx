@@ -1,4 +1,3 @@
-import * as React from "react"
 
 interface SvgComponentProps extends React.SVGAttributes<SVGSVGElement> {    
     width: string | number | undefined;

@@ -1,4 +1,4 @@
-const Title = () => {
+const HeroSection = () => {
     return ( 
         <>
             <div className="text-white text-center flex items-center flex-col">
@@ -9,4 +9,4 @@ const Title = () => {
      );
 }
  
-export default Title;
+export default HeroSection;
