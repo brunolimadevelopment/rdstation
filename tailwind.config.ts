@@ -33,6 +33,7 @@ const config = {
       base: ['1rem', { lineHeight: '1.5rem' }], // 16px | 24px
       lg: ['1.25rem', '1.75rem'], // 20px | 28px
       xl: ['2.5rem', '3.308rem'], // 40px | 52.92px
+      'sm2x': ['0.9rem', '1.05'],
       '2xl': ['1.5rem', { lineHeight: '1.625rem' }],
     },
     extend: {

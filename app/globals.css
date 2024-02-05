@@ -24,6 +24,11 @@
   .center {
     justify-content: center !important;
   }
+
+  svg, form {
+    max-width: 100%;
+  }
+
   
 }
 /* BOTAO DE DOWNLOAD 
@@ -40,6 +45,8 @@
   @apply relative after:content-[""] after:block after:absolute after:left-[calc(0%_-_2px)] 
   after:w-[calc(100%_+_(2_*_2px))] after:h-0 after:box-border after:border-t-4 after:border-t-gray-light-5x after:border-x-8 
   after:border-x-[rgba(0,0,0,0)] after:border-solid after:top-[calc(100%_+_2px)] 
+
+  
 }
 
 

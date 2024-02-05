@@ -4,27 +4,17 @@ import Logo from './logo';
 import Button from './button';
 import ArrowIcon from './arrow';
 import ArrowBack from './arrow-back';
+import { FormDataProps } from '@/app/types/form'
 
 type CardProps = {
-  data: {
-    name: string;
-    telefone: string;
-    email: string;
-  };
-  onBackClick: (formData: FormData) => void;  // Adicione o parâmetro FormData
-}
-
-interface FormData {
-  name: string;
-  telefone: string;
-  email: string;
-}
+  data: FormDataProps;
+  onBackClick: (formData: FormDataProps) => void;
+};
 
 const Card: React.FC<CardProps> = ({ data, onBackClick }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   
-  // Inicializa o estado local 'formData' com os dados recebidos como propriedade
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<FormDataProps>({
     name: data.name,
     telefone: data.telefone,
     email: data.email,
@@ -60,7 +50,6 @@ const Card: React.FC<CardProps> = ({ data, onBackClick }) => {
   };
 
   const handleVoltarClick = () => {
-
     onBackClick(formData);
   };
 
@@ -68,22 +57,22 @@ const Card: React.FC<CardProps> = ({ data, onBackClick }) => {
   return (
     <>
       <div className="flex flex-col justify-start">
-      <button onClick={handleVoltarClick} className="font-nunito font-normal text-white text-lg mb-5 flex items-center"><ArrowBack width={21} height={21} />Gere outro cartão</button>
-      <div className="flex justify-center center flex-row items-center rounded-3xl bg-white w-[510px] h-[247px] mb-5" id="card" ref={cardRef}>
+      <button onClick={handleVoltarClick} className="hover:text-slate-200 font-nunito font-normal text-white text-sm2x sm:text-lg mb-5 flex items-center"><ArrowBack width={21} height={21} />Gere outro cartão</button>
+      <div className="flex justify-center center flex-row items-center rounded-3xl bg-white sm:w-[100%] h-[159px] sm:h-[217px] pl-6 sm:pl-0 break-all mb-5" id="card" ref={cardRef}>
         <Logo width={70} height={60} text={false} />
-        <div className="flex flex-col justify-center h-[170px] border-l-2 border-solid border-gray-light-3x ml-4 px-5 font-nunito font-normal text-lg">
+        <div className="flex flex-col justify-center sm:h-[130px] border-l-2 border-solid border-gray-light-3x ml-4 px-5 font-nunito font-normal text-sm2x sm:text-base">
           <p>{data.name}</p>
           <p className="mt-5 mb-5">{data.telefone}</p>
           <p>{data.email}</p>
         </div>
       </div>
-      <Button width={510} height={48} size="medium" onClick={handleDownload} 
+      <Button width={100} height={48} size="medium" onClick={handleDownload} 
        text={downloaded ? "Cartão Baixado" : "Baixar Cartão"}
        disabled={isDownloading || downloaded}
-       className={downloaded ? 'btn-rd-disabled' : 'btn-rd'}  />
+       className={downloaded ? 'btn-rd-disabled' : 'btn-rd hover:bg-[#F8DCA0]'}  />
       
       <a href="https://app.rdstation.com.br/signup" 
-        className="text-white font-nunito font-extrabold font-lg uppercase w-full text-center mt-6 flex items-center center" 
+        className="text-white hover:text-slate-200 font-nunito font-extrabold text-sm2x sm:text-base uppercase w-full text-center mt-6 flex items-center center" 
         title="Fazer um teste grátis do rd station marketing" target="_blank" rel="noopener noreferrer" >
           Fazer um teste grátis do rd station marketing 
           <ArrowIcon width={25} height={24} className="ml-2" color="#FFF" />

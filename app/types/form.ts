@@ -3,3 +3,8 @@ export type FormDataProps = {
     telefone: string;
     email: string;
 };
+
+export type CardProps = {
+    data: FormDataProps;  
+    onBackClick: (formData: FormDataProps) => void;
+};
