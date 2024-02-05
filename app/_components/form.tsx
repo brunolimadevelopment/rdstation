@@ -1,30 +1,64 @@
 'use client';
-import { useState } from 'react';
+import { useState, ChangeEvent, FormEvent, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import Button from './button';
 const Card = dynamic(() => import('./card'), { ssr: false });
+import { FormDataProps } from '@/app/types/form'
+import InputMask from 'react-input-mask';
+import { z } from "zod"
+
+
+const contactFormSchema = z.object({
+    name: z.string().min(2, { message: 'Nome é obrigatório' }),
+    telefone: z.string().min(1, { message: 'Telefone é obrigatório' }),
+    email: z.string().email({ message: 'E-mail inválido' }),
+})
 
 const Form = () => {
-    const [formData, setFormData] = useState({
+    const nameInputRef = useRef<HTMLInputElement>(null);
+    const initialFormData: FormDataProps = {
         name: '',
         telefone: '',
         email: '',
-      });
+    };
+
+    const [formData, setFormData] = useState<FormDataProps>(initialFormData);
+    const [showForm, setShowForm] = useState(true);
+
+    const validationResult = contactFormSchema.safeParse(formData);
+
     
-      const [showForm, setShowForm] = useState(true);
-    
-      const handleChange = (e: any) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData({
-          ...formData,
-          [name]: value || '',
+            ...formData,
+            [name]: value || '',
         });
-      };
-    
-      const handleSubmit = (e: any) => {
+    };
+
+    const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        setShowForm(false);
-      };
+        
+        // Verificar se todos os campos estão preenchidos
+        if (formData.name.trim() !== '' && formData.telefone.trim() !== '' && formData.email.trim() !== '') {
+            // Se todos os campos estiverem preenchidos, pode prosseguir
+            setShowForm(false);
+        } else {
+            // Se algum campo estiver vazio, exiba mensagens de erro ou faça algo apropriado
+            console.error('Todos os campos são obrigatórios');
+
+            // Definir o foco no input de nome usando ref
+            if (nameInputRef.current) {
+                nameInputRef.current.focus();
+            }
+        }
+
+    };
+
+    const handleBackClick = () => {
+        setFormData(initialFormData);
+        setShowForm(true);
+    };
 
     return ( 
         
@@ -36,6 +70,7 @@ const Form = () => {
                             <label className="text-white font-nunito font-bold mb-4 text-sm">Nome*</label>
                             <div className="mt-2">
                                 <input 
+                                    ref={nameInputRef}
                                     type="text" 
                                     value={formData.name}
                                     onChange={handleChange}
@@ -48,7 +83,9 @@ const Form = () => {
                         <div className="sm:col-span-3">
                             <label  className="text-white font-nunito font-bold mb-4 text-sm">Telefone</label>
                             <div className="mt-2">
-                                <input 
+                                <InputMask 
+                                    mask="(99) 9 9999-9999"
+                                    maskChar=""
                                     type="text" 
                                     name="telefone" 
                                     id="telefone" 
@@ -63,6 +100,7 @@ const Form = () => {
                             <label  className="text-white font-nunito font-bold mb-4 text-sm">E-mail*</label>
                             <div className="mt-2">
                                 <input 
+                                   
                                     type="text" 
                                     name="email" 
                                     id="email"
@@ -80,11 +118,11 @@ const Form = () => {
                             </ul>
                             <p className="mt-5">* Você pode alterar suas permissões de comunicação a qualquer tempo.</p>
                         </div>
-                        <Button />
+                        <Button width={620} height={48} size="large" text="Gerar Cartão Grátis" status="enabled" type="submit" />
                     </form>
                 </>
             ) : (
-                <Card data={formData} />
+                <Card data={formData} onBackClick={handleBackClick} />
             )}
         </>
     );

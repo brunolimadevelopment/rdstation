@@ -1,14 +1,12 @@
+import { LogoComponentProps } from '@/app/types/logo'
 
-interface SvgComponentProps extends React.SVGAttributes<SVGSVGElement> {    
-    width: string | number | undefined;
-    height: number;
-}
+function Logo(props: LogoComponentProps) {
 
-function Logo(props: SvgComponentProps) {
-    
+  const viewBoxValue = props.text ? "0 0 147 36" : "0 0 47 36";
+
   return (
     <svg
-      viewBox="0 0 147 36"
+      viewBox={viewBoxValue}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
@@ -36,7 +34,7 @@ function Logo(props: SvgComponentProps) {
           <path fill="#fff" d="M0 0H41.6V36H0z" />
         </clipPath>
       </defs>
-    </svg>
+    </svg>  
   )
 }
 

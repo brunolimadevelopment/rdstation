@@ -19,3 +19,49 @@
     height: 100vh;
   }
 }
+
+@layer utilities {
+  .center {
+    justify-content: center !important;
+  }
+  
+}
+/* BOTAO DE DOWNLOAD 
+   aplicar essa classe apos o clique de download.
+*/
+.btn-rd-disabled {
+  @apply font-nunito font-extrabold w-auto relative text-base uppercase tracking-[0.32px]
+  cursor-not-allowed bg-gray-light-2x 
+  text-gray-light-4x 
+  flex flex-row-reverse items-center center select-none m-0 px-[22px] py-2.5 rounded-none border-2 border-solid border-[rgba(0,0,0,0)];
+  transition: background 0.4s, border 0.4s, color 0.4s;
+  white-space: break-spaces;
+
+  @apply relative after:content-[""] after:block after:absolute after:left-[calc(0%_-_2px)] 
+  after:w-[calc(100%_+_(2_*_2px))] after:h-0 after:box-border after:border-t-4 after:border-t-gray-light-5x after:border-x-8 
+  after:border-x-[rgba(0,0,0,0)] after:border-solid after:top-[calc(100%_+_2px)] 
+}
+
+
+
+/* BOTAO DO FORM */
+.btn-rd {
+  @apply  font-nunito font-extrabold w-auto relative text-base leading-4 uppercase tracking-[0.32px]
+  flex flex-row items-center center select-none m-0 px-[22px] py-2.5 rounded-none border-2 border-solid border-[rgba(0,0,0,0)];
+  transition: background 0.4s, border 0.4s, color 0.4s;
+  white-space: break-spaces;
+
+  @apply bg-yellow text-black relative border-black after:content-[""] after:block after:absolute after:left-[calc(0%_-_2px)] 
+  after:w-[calc(100%_+_(2_*_2px))] after:h-0 after:box-border after:border-t-4 after:border-t-black after:border-x-8 
+  after:border-x-[rgba(0,0,0,0)] after:border-solid after:top-[calc(100%_+_2px)] focus:shadow-none focus:bg-yellow;
+
+}
+.btn.btn-sm {
+  @apply py-1.5;
+}
+.card-buttons .btn {
+  @apply w-auto min-w-[180px] text-sm;
+}
+.btn-rd:focus {
+  outline: none;
+}

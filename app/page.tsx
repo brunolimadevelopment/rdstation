@@ -9,7 +9,7 @@ export default function Home() {
       <section className="mt-12">
         <div className="container">
           <div className="flex justify-between flex-row">
-            <Ilustration width={471} height={347}/>
+            <Ilustration width={471} height={347} text={false} />
             <Form />
           </div>
         </div>

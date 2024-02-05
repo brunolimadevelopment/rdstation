@@ -39,10 +39,17 @@ const config = {
       colors: {
         'gray-light': '#636E7C',
         'gray-light-2x': '#E1E4E8',
+        'gray-light-3x': '#D8D9FD',
+        'gray-light-4x':  '#97A1AC',
+        'gray-light-5x': '#97A1AC',
+        'yellow': '#F2BF4E',
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require('@tailwindcss/aspect-ratio'),
+    require("tailwindcss-animate"),
+  ],
 } satisfies Config
 
 export default config

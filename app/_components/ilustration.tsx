@@ -1,13 +1,8 @@
+import { LogoComponentProps } from '@/app/types/logo'
 
-interface SvgComponentProps extends React.SVGAttributes<SVGSVGElement> {    
-    width: string | number | undefined;
-    height: number;
-}
-
-function Ilustration(props: SvgComponentProps) {
+function Ilustration(props: LogoComponentProps) {
   return (
     <svg
-
       viewBox="0 0 471 347"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
