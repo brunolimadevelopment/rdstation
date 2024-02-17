@@ -7,7 +7,7 @@ import ArrowBack from './arrow-back';
 import { FormDataProps } from '@/app/types/form'
 
 type CardProps = {
-  data: FormDataProps;
+  data?: FormDataProps;
   onBackClick: (formData: FormDataProps) => void;
 };
 
@@ -15,9 +15,9 @@ const Card: React.FC<CardProps> = ({ data, onBackClick }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   
   const [formData, setFormData] = useState<FormDataProps>({
-    name: data.name,
-    telefone: data.telefone,
-    email: data.email,
+    name: data?.name || '',
+    phone: data?.phone || '',
+    email: data?.email || '',
   });
   
   const [isDownloading, setIsDownloading] = useState(false);
@@ -61,9 +61,9 @@ const Card: React.FC<CardProps> = ({ data, onBackClick }) => {
       <div className="flex justify-center center flex-row items-center rounded-3xl bg-white sm:w-[100%] h-[159px] sm:h-[217px] pl-6 sm:pl-0 break-all mb-5" id="card" ref={cardRef}>
         <Logo width={70} height={60} text={false} />
         <div className="flex flex-col justify-center sm:h-[130px] border-l-2 border-solid border-gray-light-3x ml-4 px-5 font-nunito font-normal text-sm2x sm:text-base">
-          <p>{data.name}</p>
-          <p className="mt-5 mb-5">{data.telefone}</p>
-          <p>{data.email}</p>
+          <p>{data?.name}</p>
+          <p className="mt-5 mb-5">{data?.phone}</p>
+          <p>{data?.email}</p>
         </div>
       </div>
       <Button width={100} height={48} size="medium" onClick={handleDownload} 

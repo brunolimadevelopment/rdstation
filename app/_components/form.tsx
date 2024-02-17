@@ -1,63 +1,48 @@
 'use client';
-import { useState, ChangeEvent, FormEvent, useRef } from 'react';
+import { useState } from 'react';
+import { useForm } from "react-hook-form"
 import dynamic from 'next/dynamic';
 import Button from './button';
 const Card = dynamic(() => import('./card'), { ssr: false });
-import { FormDataProps } from '@/app/types/form'
 import InputMask from 'react-input-mask';
 import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod" // validação do zod + hook form
+import { isEmail } from "validator";
 
-const contactFormSchema = z.object({
-    name: z.string().min(2, { message: 'O nome deve ter pelo menos dois caracteres' }).refine(value => value.trim() !== '', { message: 'Nome é obrigatório' }),
-    telefone: z.string().refine(value => value.trim() !== '', { message: 'Telefone é obrigatório' }),
-    email: z.string().email({ message: 'E-mail inválido' }).refine(value => value.trim() !== '', { message: 'E-mail é obrigatório' }),
+const formSchema = z.object({
+    name: z.string().min(2),
+    phone: z.string().min(11),
+    email: z.string().email(),
 })
 
-const Form = () => {
-    const nameInputRef = useRef<HTMLInputElement>(null);
-    const initialFormData: FormDataProps = {
-        name: '',
-        telefone: '',
-        email: '',
-    };
+type dataFormSchema = z.infer<typeof formSchema>
 
-    const [formData, setFormData] = useState<FormDataProps>(initialFormData);
+const Form = () => {
+    const [dataFom, setDataForm] = useState<dataFormSchema>({
+        name: "",
+        phone: "",
+        email: ""
+    });
+
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+      } = useForm<dataFormSchema>({
+        resolver: zodResolver(formSchema)
+      })
+
     const [showForm, setShowForm] = useState(true);
 
-    const validationResult = contactFormSchema.safeParse(formData);
-
-    
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value || '',
-        });
-    };
-
-    const handleSubmit = (e: FormEvent) => {
-        e.preventDefault();
-        
-        if (!validationResult.success) {
-            const nameError = validationResult.error.errors.find((error) => error.path[0] === 'name');
-            
-            if (nameError) {
-                console.error(nameError.message);
-            }
-            if (nameInputRef.current) {
-                nameInputRef.current.focus();
-            }
-
-        } else {
-            setShowForm(false);            
-        }
-
-    };
+   
+    const onSubmit = (data: any) => {
+        setDataForm(data)
+        setShowForm(false);            
+    }
 
     const handleBackClick = () => {
-        setFormData(initialFormData);
         setShowForm(true);
-        
     };
 
     return ( 
@@ -65,50 +50,52 @@ const Form = () => {
         <>
             {showForm ? (
                 
-                <form onSubmit={handleSubmit} className="sm:w-[620px] grid grid-cols-1 gap-x-10 gap-y-4 sm:grid-cols-6">
+                <form onSubmit={handleSubmit(onSubmit)} className="sm:w-[620px] grid grid-cols-1 gap-x-10 gap-y-4 sm:grid-cols-6">
                     <div className="col-span-full">
                         <label className="text-white font-nunito font-bold mb-4 text-sm">Nome*</label>
                         <div className="mt-2">
                             <input 
-                                ref={nameInputRef}
+                                {...register("name", { required: true })}
                                 type="text" 
-                                value={formData.name}
-                                onChange={handleChange}
                                 placeholder="nome@email.com"
-                                name="name" 
-                                id="name" 
-                                className="block w-full px-2 h-9 font-nunito text-sm leading-5 placeholder:text-gray-light text-black sm:text-sm sm:leading-6"/>
+                                className={`block w-full px-2 h-9 font-nunito text-sm leading-5 placeholder:text-gray-light text-black sm:text-sm sm:leading-6 ${errors.name ? 'border-2 border-red-500' : ''}`}/>
+                                {errors.name && <span className="text-red-600 mt-1 flex font-medium">O campo nome é obrigatório.</span>}
                         </div>
                     </div>
                     <div className="sm:col-span-3">
                         <label  className="text-white font-nunito font-bold mb-4 text-sm">Telefone</label>
                         <div className="mt-2">
                             <InputMask 
+                                {...register("phone", { required: true })}
                                 mask="(99) 9 9999-9999"
                                 maskChar=""
                                 type="text" 
-                                name="telefone" 
-                                id="telefone" 
                                 placeholder="(00) 0 0000-0000"
-                                className="block w-full px-2 h-9 font-nunito text-sm leading-5 placeholder:text-gray-light text-black sm:text-sm sm:leading-6"
-                                value={formData.telefone}
-                                onChange={handleChange}
-                                />
+                                className={`block w-full px-2 h-9 font-nunito text-sm leading-5 placeholder:text-gray-light text-black sm:text-sm sm:leading-6 ${errors.phone ? 'border-2 border-red-500' : ''}`}/>
+                                {errors.phone && <span className="text-red-600 mt-1 flex font-medium">O campo Telefone é obrigatório.</span>}
                         </div>
                     </div>
                     <div className="sm:col-span-3">
                         <label  className="text-white font-nunito font-bold mb-4 text-sm">E-mail*</label>
                         <div className="mt-2">
                             <input 
-                                
-                                type="text" 
-                                name="email" 
-                                id="email"
+                                {...register("email", { 
+                                    required: true,
+                                    validate: (value) => isEmail(value),                                 
+                                })}
+                                type="email" 
                                 placeholder="nome@email.com" 
-                                className="block w-full px-2 h-9 font-nunito text-sm leading-5 placeholder:text-gray-light text-black sm:text-sm sm:leading-6"
-                                value={formData.email}
-                                onChange={handleChange}
+                                className={`block w-full px-2 h-9 font-nunito text-sm leading-5 placeholder:text-gray-light text-black sm:text-sm sm:leading-6 ${errors?.email && 'border-2 border-red-500' }`}
                                 />
+                                {errors?.email?.type === "invalid_string" && (
+                                    <span className="text-red-600 mt-1 flex font-medium">O campo email é obrigatório.</span>
+                                )}
+
+                                {errors?.email?.type === "validate" && (
+                                    <span className="text-red-600 mt-1 flex font-medium">Email is invalid.</span>
+                                )}
+                                
+
                         </div>
                     </div>
                     <div className="col-span-full text-gray-light-2x pt-4 font-nunito font-normal text-sm leading-5 w-full">
@@ -124,7 +111,8 @@ const Form = () => {
                 </form>
                 
             ) : (
-                <Card data={formData} onBackClick={handleBackClick} />
+                
+                <Card data={dataFom} onBackClick={handleBackClick} />
             )}
         </>
     );

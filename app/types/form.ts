@@ -1,6 +1,6 @@
 export type FormDataProps = {
     name: string;
-    telefone: string;
+    phone: string;
     email: string;
 };
 
