@@ -2,7 +2,7 @@ import { LogoComponentProps } from '@/app/types/logo'
 
 function Logo(props: LogoComponentProps) {
 
-  const viewBoxValue = props.text ? "0 0 147 36" : "0 0 47 36";
+  const viewBoxValue = props ? "0 0 147 36" : "0 0 47 36";
 
   return (
     <svg
