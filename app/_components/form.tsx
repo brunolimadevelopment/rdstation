@@ -1,50 +1,49 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form"
-import dynamic from 'next/dynamic';
 import Button from './button';
-const Card = dynamic(() => import('./card'), { ssr: false });
+import { Card } from '@/app/_components/card';
 import InputMask from 'react-input-mask';
-import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod" // validação do zod + hook form
 import { isEmail } from "validator";
-
-const formSchema = z.object({
-    name: z.string().min(2),
-    phone: z.string().min(11),
-    email: z.string().email(),
-})
-
-type dataFormSchema = z.infer<typeof formSchema>
+import { dataFormSchema, formSchema } from "@/app/types/zod";
 
 const Form = () => {
-    const [dataFom, setDataForm] = useState<dataFormSchema>({
-        name: "",
-        phone: "",
-        email: ""
-    });
+
+    const [dataFom, setDataForm] = useState<dataFormSchema>(
+        { name: "", phone: "", email: "", }
+    );
+
+    const [showForm, setShowForm] = useState<boolean>(true);
 
     const {
         register,
         handleSubmit,
+        reset,
         watch,
+        formState,
         formState: { errors },
-      } = useForm<dataFormSchema>({
+    } = useForm<dataFormSchema>({
         resolver: zodResolver(formSchema)
-      })
-
-    const [showForm, setShowForm] = useState(true);
-
+    })
    
     const onSubmit = (data: any) => {
         setDataForm(data)
         setShowForm(false);            
     }
 
-    const handleBackClick = () => {
+    const handleBackClick = (dataFom: dataFormSchema) => {
+        setDataForm(dataFom);
         setShowForm(true);
     };
 
+    useEffect(() => {
+        if (formState.isSubmitSuccessful) {
+          reset()
+        }
+        
+    }, [formState, reset])
+    
     return ( 
         
         <>
@@ -106,7 +105,7 @@ const Form = () => {
                         <p className="mt-5">* Você pode alterar suas permissões de comunicação a qualquer tempo.</p>
                     </div>
                     <div className="sm:col-span-full">
-                        <Button width={100} height={48} size="large" text="Gerar Cartão Grátis" status="enabled" type="submit" />
+                        <Button width={100} height={48}  />
                     </div>
                 </form>
                 
