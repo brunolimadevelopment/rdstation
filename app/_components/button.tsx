@@ -1,20 +1,9 @@
 import ArrowIcon from "./arrow";
-
-export type ButtonProps = {    
-  width:  number | undefined;
-  height:  number | undefined;
-  //size: string;
-  //text: string | boolean;
-  onClick?: () => Promise<void>;
-  //className?: string;
-  //type?: "submit" | "reset" | "button" | undefined;
-  //status?: "enabled" | "disabled" | undefined;
-  //disabled?: boolean;
-}
+import { ButtonProps } from '@/app/types/button'
 
 function Button(props: ButtonProps) {
 
-  const { width, height,   ...rest } = props;
+  const { width, height, text, status, ...rest } = props;
 
   const buttonStyle: React.CSSProperties = {
     width: `${width}%`,
@@ -22,8 +11,9 @@ function Button(props: ButtonProps) {
   };
 
   return (
-    <button  style={buttonStyle} {...rest}>
+    <button className={ status ?  'btn-rd-disabled' : 'btn-rd'} style={buttonStyle} {...rest}>
       <ArrowIcon width={25} height={24} />
+      {text}
     </button>
   )
 }

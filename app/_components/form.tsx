@@ -15,6 +15,7 @@ const Form = () => {
     );
 
     const [showForm, setShowForm] = useState<boolean>(true);
+    const [disabled, setStatus] = useState(false);
 
     const {
         register,
@@ -29,12 +30,14 @@ const Form = () => {
    
     const onSubmit = (data: any) => {
         setDataForm(data)
-        setShowForm(false);            
+        setShowForm(false);   
+        setStatus(true)         
     }
 
     const handleBackClick = (dataFom: dataFormSchema) => {
         setDataForm(dataFom);
         setShowForm(true);
+        setStatus(false)
     };
 
     useEffect(() => {
@@ -105,7 +108,7 @@ const Form = () => {
                         <p className="mt-5">* Você pode alterar suas permissões de comunicação a qualquer tempo.</p>
                     </div>
                     <div className="sm:col-span-full">
-                        <Button width={100} height={48}  />
+                        <Button width={100} height={48} text="Gerar Cartão" status={disabled} />
                     </div>
                 </form>
                 

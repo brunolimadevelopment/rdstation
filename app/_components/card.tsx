@@ -18,6 +18,10 @@ export function Card({ data, onBackClick }: CardProps) {
   
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
+  const [disabled, setStatus] = useState(false);
+  const [texto, setTexto] = useState('Baixar Cartão');
+
+  
 
   const handleDownload = async () => {
     
@@ -52,6 +56,8 @@ export function Card({ data, onBackClick }: CardProps) {
 
         setIsDownloading(true);
         setDownloaded(true);
+        setStatus(true)
+        setTexto('Cartão Baixado');
 
       } catch (error) {
         console.error('Erro ao gerar o PDF:', error);
@@ -61,6 +67,8 @@ export function Card({ data, onBackClick }: CardProps) {
 
   const handleVoltarClick = () => {
     onBackClick(dataFom);
+    setStatus(false)
+    setTexto('Gerar Cartão');
   };
 
 
@@ -77,7 +85,7 @@ export function Card({ data, onBackClick }: CardProps) {
           </div>
         </div>
         <Button width={100} height={48} onClick={handleDownload} 
-        
+        text={texto} status={disabled}
        />
         
         <a href="https://app.rdstation.com.br/signup" 
